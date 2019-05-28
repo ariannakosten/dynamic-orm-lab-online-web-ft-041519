@@ -8,6 +8,4 @@ class Student < InteractiveRecord
     attr_accessor col_name.to_sym
   end
   
-  #sets attr_accessor specific to class itself using column names turned to symbols
-  
 end
