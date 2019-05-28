@@ -42,10 +42,10 @@ class InteractiveRecord
     self.class.table_name
   end
 
-  def self.find_by_name(name)
-    sql = "SELECT * FROM #{table_name_for_insert} WHERE name = ?"
-    DB[:conn].execute(sql, name)
-  end
+  # def self.find_by_name(name)
+  #   sql = "SELECT * FROM #{table_name_for_insert} WHERE name = ?"
+  #   DB[:conn].execute(sql, name)
+  # end
 
  def save
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
@@ -53,24 +53,22 @@ class InteractiveRecord
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
-  def self.find_by(attribute)
-    # column_name = attribute.keys[0].to_s
-    # value_name = attribute.values[0]
-
-    # sql = <<-SQL
-    #   SELECT * FROM #{table_name}
-    #   WHERE #{column_name} = ?
-    #   SQL
-
-    # DB[:conn].execute(sql, value_name);
-     attribute_key = attribute.keys.join()
-    attrubute_value = attribute.values.first
-    sql =<<-SQL
-      SELECT * FROM #{self.table_name}
-      WHERE #{attribute_key} = "#{attrubute_value}"
-      LIMIT 1
-    SQL
-    row = DB[:conn].execute(sql)
+  def self.find_by_name(name)
+    sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+    DB[:conn].execute(sql)
   end
+  
+  def self.find_by(att)
+    sql = "SELECT * FROM #{self.table_name} WHERE #{att.keys[0].to_s} = '#{att.values[0].to_s}'"
+    DB[:conn].execute(sql)
+  end
+  # def self.find_by(attribute)
+  #   sql =<<-SQL
+  #     SELECT * FROM #{self.table_name}
+  #     WHERE #{attribute_key} = "#{attrubute_value}"
+  #     LIMIT 1
+  #   SQL
+  #   row = DB[:conn].execute(sql)
+  # end
   
 end
